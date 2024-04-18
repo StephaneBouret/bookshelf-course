@@ -23,6 +23,21 @@ class Book
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $publicationAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?Author $author = null;
+
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?State $state = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $picture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +75,66 @@ class Book
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPublicationAt(): ?\DateTimeImmutable
+    {
+        return $this->publicationAt;
+    }
+
+    public function setPublicationAt(\DateTimeImmutable $publicationAt): static
+    {
+        $this->publicationAt = $publicationAt;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
