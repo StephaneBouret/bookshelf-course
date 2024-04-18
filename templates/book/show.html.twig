@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Livre :
+	{{ book.name }}
+{% endblock %}
+
+{% block body %}
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="{{ path('homepage') }}">Accueil</a>
+		</li>
+		<li class="breadcrumb-item">
+			<a href="{{ path('book_category', {'slug':book.category.slug})}}">{{ book.category.name }}</a>
+		</li>
+		<li class="breadcrumb-item active">{{ book.name }}</li>
+	</ol>
+	<h1>{{ book.name }}
+	</h1>
+	<div class="row">
+		<div class="col-md-4">
+			<img class="img-fluid" src="{{ book.picture }}" alt="{{ book.name }}">
+		</div>
+		<div class="col">
+			<span class="badge bg-primary">
+				{{ book.category.name }}
+			</span>
+			<span class="badge bg-danger">
+				{{ book.author.firstname }}
+				{{ book.author.lastname }}
+			</span>
+			<p>{{ book.description }}</p>
+			<a href="#" class="btn btn-success btn-lg">
+				<i class="fas fa-shopping-cart"></i>
+				Réserver
+			</a>
+		</div>
+	</div>
+{% endblock %}
