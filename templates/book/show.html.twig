@@ -29,7 +29,9 @@
 				{{ book.author.firstname }}
 				{{ book.author.lastname }}
 			</span>
+			<p>Date de parution : {{ book.publicationAt | date("Y") }}</p>
 			<p>{{ book.description }}</p>
+			<p>Etat : {{ book.state.name }}</p>
 			<a href="#" class="btn btn-success btn-lg">
 				<i class="fas fa-shopping-cart"></i>
 				Réserver

@@ -1,0 +1,17 @@
+<div class="card mb-3 me-2">
+	<img src="{{ b.picture }}" alt="Image du livre" class="img-fluid">
+	<div class="card-body">
+		<h4 class="card-title">{{ b.name }}</h4>
+		<span class="d-flex flex-row align-items-center align-self-center flex-wrap">
+			<span class="badge bg-info me-2">{{ b.category.name }}</span>
+			<span class="badge bg-danger me-2">{{ b.author.firstname }}
+				{{ b.author.lastname }}</span>
+			<span class="fw-bold">{{ b.publicationAt | date("Y")}}</span>
+		</span>
+		<p class="card-text">
+			{{ b.description|raw|nl2br|striptags|u.truncate(80, '...') }}
+		</p>
+		<a href="{{ path('book_show', {'category_slug': b.category.slug, 'slug': b.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
+		<a href="#" class="btn btn-success btn-sm">Réserver</a>
+	</div>
+</div>

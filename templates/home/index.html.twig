@@ -7,20 +7,8 @@
 	<h1>Nos livres à la une</h1>
 	<div class="row">
 		{% for b in books %}
-			<div class="col">
-				<div class="card">
-					<img src="{{ b.picture }}" alt="Image du livre" class="img-fluid">
-					<div class="card-body">
-						<h4 class="card-title">{{ b.name }}</h4>
-						<span class="badge bg-info">{{ b.category.name }}</span>
-						<span class="badge bg-danger">{{ b.author.firstname }} {{ b.author.lastname }}</span>
-						<p class="card-text">
-							{{ b.description | u.truncate(80, '...') }}
-						</p>
-						<a href="#" class="btn btn-primary btn-sm">Détails</a>
-						<a href="#" class="btn btn-success btn-sm">Réserver</a>
-					</div>
-				</div>
+			<div class="col-lg-4 col-md-4">
+				{% include "partials/_book_card.html.twig" %}
 			</div>
 		{% endfor %}
 	</div>
