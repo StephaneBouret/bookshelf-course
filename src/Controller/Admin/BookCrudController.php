@@ -5,12 +5,14 @@ namespace App\Controller\Admin;
 use App\Entity\Book;
 use App\Form\Type\CustomDateType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -46,7 +48,14 @@ class BookCrudController extends AbstractCrudController
                 ->setFormat('yyyy')
                 ->renderAsChoice(),
             FormField::addColumn(6),
-            UrlField::new('picture', 'URL de la photo')->hideOnIndex(),
+            // UrlField::new('picture', 'URL de la photo')->hideOnIndex(),
+            TextField::new('imageFile', 'Fichier image :')
+                ->setFormType(VichImageType::class)
+                ->setTranslationParameters(['form.label.delete' => 'Supprimer l\'image'])
+                ->hideOnIndex(),
+            ImageField::new('imageName', 'Image')
+                ->setBasePath('/images/books')
+                ->onlyOnIndex(),
         ];
     }
 

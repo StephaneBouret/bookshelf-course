@@ -60,7 +60,7 @@ class AppFixtures extends Fixture
                 $book->setName($faker->university)
                     ->setSlug(strtolower($this->slugger->slug($book->getName())))
                     ->setDescription($faker->paragraph())
-                    ->setPicture($faker->imageUrl(200, 200, true))
+                    // ->setPicture($faker->imageUrl(200, 200, true))
                     ->setCategory($category)
                     ->setPublicationAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-6 months')));
 

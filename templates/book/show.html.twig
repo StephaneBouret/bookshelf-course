@@ -19,7 +19,8 @@
 	</h1>
 	<div class="row">
 		<div class="col-md-4">
-			<img class="img-fluid" src="{{ book.picture }}" alt="{{ book.name }}">
+			{# <img class="img-fluid" src="{{ book.picture }}" alt="{{ book.name }}"> #}
+			<img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.name }}" class="img-fluid">
 		</div>
 		<div class="col">
 			<span class="badge bg-primary">
