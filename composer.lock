@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "452c17951c66fa0595086c91e62aa369",
+    "content-hash": "a61e81b8a8ef1a15b0273dd242051c61",
     "packages": [
         {
             "name": "bluemmb/faker-picsum-photos-provider",
