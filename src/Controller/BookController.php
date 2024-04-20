@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BookController extends AbstractController
 {
-    #[Route('/{slug}', name: 'book_category')]
+    #[Route('/{slug}', name: 'book_category', priority: -1)]
     public function category($slug, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneBy([
@@ -29,7 +29,7 @@ class BookController extends AbstractController
         ]);
     }
     
-    #[Route('/{category_slug}/{slug}', name: 'book_show')]
+    #[Route('/{category_slug}/{slug}', name: 'book_show', priority: -1)]
     public function show($slug, BookRepository $bookRepository)
     {
         $book = $bookRepository->findOneBy([
