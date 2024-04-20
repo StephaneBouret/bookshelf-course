@@ -23,9 +23,10 @@ security:
                 # target: app_any_route
 
             remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
+                secret: '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+                token_provider:
+                    doctrine: true
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
                 #always_remember_me: true
@@ -39,7 +40,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
