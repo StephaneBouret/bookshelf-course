@@ -18,7 +18,8 @@
 	<h1>{{ book.name }}
 	</h1>
 	<div class="row">
-		<div class="col-md-4">
+		<div
+			class="col-md-4">
 			{# <img class="img-fluid" src="{{ book.picture }}" alt="{{ book.name }}"> #}
 			<img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.name }}" class="img-fluid">
 		</div>
@@ -35,10 +36,19 @@
 			<p>{{ book.description | raw | nl2br }}</p>
 			<p>Etat :
 				{{ book.state.name }}</p>
-			<a href="#" class="btn btn-success btn-lg">
-				<i class="fas fa-shopping-cart"></i>
-				Réserver
-			</a>
+			<p>
+			{% if book.isAvailable == true %}
+				<span class="badge bg-success">Disponible</span>
+			{% else %}
+				<span class="badge bg-danger">Indisponible</span>
+			{% endif %}
+			</p>
+			{% if book.isAvailable %}
+				<a href="{{ path('cart_add', {'id': book.id}) }}" class="btn btn-success btn-lg">
+					<i class="fas fa-shopping-cart"></i>
+					Réserver
+				</a>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

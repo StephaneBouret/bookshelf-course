@@ -15,10 +15,12 @@
         "easycorp/easyadmin-bundle": "^4.9",
         "fakerphp/faker": "^1.23",
         "mbezhanov/faker-provider-collection": "^2.0",
+        "symfony/asset": "7.0.*",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/runtime": "7.0.*",
         "symfony/security-bundle": "7.0.*",
         "symfony/string": "7.0.*",
@@ -80,6 +82,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.5",
+        "symfony/debug-bundle": "7.0.*",
         "symfony/maker-bundle": "^1.58",
         "symfony/stopwatch": "7.0.*",
         "symfony/web-profiler-bundle": "7.0.*"

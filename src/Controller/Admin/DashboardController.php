@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Borrowing;
 use App\Entity\Category;
 use App\Entity\State;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégorie', 'fas fa-list', Category::class);
         yield MenuItem::linkToCrud('Auteur', 'fa-solid fa-pen-nib', Author::class);
         yield MenuItem::linkToCrud('Etat', 'fa-solid fa-wrench', State::class);
+        yield MenuItem::linkToCrud('Emprunt', 'fa-brands fa-leanpub', Borrowing::class);
         yield MenuItem::linkToRoute('Retour au site', 'fas fa-home', 'homepage');
     }
 }

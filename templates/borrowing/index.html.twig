@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Mes emprunts
+{% endblock %}
+
+{% block body %}
+	<h1>Mes emprunts</h1>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Numéro</th>
+				<th>Date d'emprunt</th>
+				<th>Date limite</th>
+				<th>Livres</th>
+				<th>Total</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for b in borrowings %}
+				{% if b.returnDateAt is null %}
+					<tr {% if b.isOverdue %} class="table-danger" {% endif %}>
+						<td>{{ b.id }}</td>
+						<td>{{ b.borrowingAt | date('d/m/Y H:i') }}</td>
+						<td>{{ b.dueDateAt | date('d/m/Y H:i') }}</td>
+						<td>
+							<ul>
+								{% for book in b.books %}
+									<li>{{ book.name }}</li>
+								{% endfor %}
+							</ul>
+						</td>
+						<td>{{ b.total }}</td>
+						{% if b.isOverdue %}
+						<td class="text-center">
+							<a href="{{ path('borrowing_extend', {'id': b.id})}}" class="btn btn-sm btn-success">
+								<i class="fas fa-plus"></i>
+							</a>
+						</td>
+						{% endif %}
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

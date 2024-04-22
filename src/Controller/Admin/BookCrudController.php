@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 
 class BookCrudController extends AbstractCrudController
 {
@@ -56,6 +57,7 @@ class BookCrudController extends AbstractCrudController
             ImageField::new('imageName', 'Image')
                 ->setBasePath('/images/books')
                 ->onlyOnIndex(),
+            BooleanField::new('isAvailable', 'Disponibilité')
         ];
     }
 

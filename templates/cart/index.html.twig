@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos réservations
+{% endblock %}
+
+{% block body %}
+<h1>Vos réservations</h1>
+{% if items | length > 0 %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Livre</th>
+				<th scope="col" class="text-center">Quantité</th>
+				<th scope="col" class="text-center"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in items %}
+				<tr>
+					<td>{{ item.book.name }}
+						-
+						{{ item.book.author }}</td>
+					<td class="text-center">{{ item.qty }}</td>
+					<td class="text-center">
+						<a href="{{ path('cart_delete', {'id': item.book.id})}}" class="btn btn-sm btn-danger">
+							<i class="fas fa-trash"></i>
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="2">Total :</td>
+				<td colspan="1" class="text-center">{{ total }}</td>
+			</tr>
+		</tfoot>
+	</table>
+	<hr>
+	{% if app.user %}
+		<h2>Confirmez votre réservation en remplissant ce formulaire</h2>
+		{{ form_start(confirmationForm, {'action': path('borrowing_confirm')}) }}
+		<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ex saepe consequuntur eligendi at quisquam.</p>
+		<div class="text-center mt-4">
+			<span class="text-muted d-flex">
+				{{ form_row(confirmationForm.agreeTerms, {
+                		label : 'j\'accepte les conditions générales d\'utilisation</a>',
+                		label_html: true
+            	}) }}
+			</span>
+		</div>
+        <button type="submit" class='btn btn-success'>Je confirme !</button>
+		{{ form_end(confirmationForm) }}
+		{% else %}
+			<h2>Vous devez vous connecter pour confirmer votre réservation</h2>
+			<a href="{{ path('security_login') }}" class="btn btn-success">Connexion</a>
+		{% endif %}
+	{% else %}
+		<h2>Le panier est vide</h2>
+	{% endif %}
+
+{% endblock %}

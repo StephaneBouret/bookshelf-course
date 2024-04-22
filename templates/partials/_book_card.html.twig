@@ -1,4 +1,5 @@
-<div class="card mb-3 me-2">
+<div
+	class="card mb-3 me-2">
 	{# <img src="{{ b.picture }}" alt="Image du livre" class="img-fluid"> #}
 	<img src="{{ vich_uploader_asset(b, 'imageFile') }}" alt="{{ b.name }}" class="img-fluid">
 	<div class="card-body">
@@ -13,6 +14,9 @@
 			{{ b.description|raw|nl2br|striptags|u.truncate(80, '...') }}
 		</p>
 		<a href="{{ path('book_show', {'category_slug': b.category.slug, 'slug': b.slug}) }}" class="btn btn-primary btn-sm">Détails</a>
-		<a href="#" class="btn btn-success btn-sm">Réserver</a>
+		{# <a href="{{ path('cart_add', {'id': b.id}) }}" class="btn btn-success btn-sm">Réserver</a> #}
+		{% if b.isAvailable %}
+			<a href="{{ path('cart_add', {'id': b.id}) }}" class="btn btn-success btn-sm">Réserver</a>
+		{% endif %}
 	</div>
 </div>

@@ -13,11 +13,20 @@
 				{% endfor %}
 			</ul>
 			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a href="{{ path('cart_show') }}" class="nav-link">
+						<i class="fas fa-shopping-cart"></i>
+						Panier ({{ cartService.total }})
+					</a>
+				</li>
 				{% if app.user %}
-					{% if is_granted('ROLE_ADMIN') %}
 					<li class="nav-item">
-						<a href="{{ path('admin') }}" class="btn btn-warning me-3">Admin</a>
+						<a href="{{ path('borrowing_index') }}" class="nav-link">Mes emprunts</a>
 					</li>
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item">
+							<a href="{{ path('admin') }}" class="btn btn-warning me-3">Admin</a>
+						</li>
 					{% endif %}
 					<li class="nav-item">
 						<a href="{{ path('security_logout') }}" class="btn btn-danger">Se déconnecter</a>
