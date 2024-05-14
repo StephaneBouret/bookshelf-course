@@ -1,7 +1,10 @@
-<div
-	class="card mb-3 me-2">
+<div class="card mb-3 me-2">
 	{# <img src="{{ b.picture }}" alt="Image du livre" class="img-fluid"> #}
-	<img src="{{ vich_uploader_asset(b, 'imageFile') }}" alt="{{ b.name }}" class="img-fluid">
+	{% if not b.imageName is empty %}
+		<img src="{{ vich_uploader_asset(b, 'imageFile') }}" alt="{{ b.name }}" class="img-fluid">
+	{% else %}
+		<img src="{{ asset('assets/img/default-img.jpg') }}" class="img-fluid" alt="Default Image">
+	{% endif %}
 	<div class="card-body">
 		<h4 class="card-title">{{ b.name }}</h4>
 		<span class="d-flex flex-row align-items-center align-self-center flex-wrap">
