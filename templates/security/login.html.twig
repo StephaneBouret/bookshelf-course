@@ -4,40 +4,54 @@
 {% endblock %}
 
 {% block body %}
-	<form method="post">
-		{% if error %}
-			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-		{% endif %}
+	<div class="card card-fill">
+		<div class="card-body">
+			<div class="my-8 mx-auto" style="width: 480px;">
+				<h1 class="text-center mb-4 fs-4">Se connecter à l'application SymBook</h1>
+				<form method="post">
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
 
-		{% if app.user %}
-			<div class="mb-3">
-				You are logged in as
-				{{ app.user.userIdentifier }},
-				<a href="{{ path('security_logout') }}">Logout</a>
+					{% if app.user %}
+						<div class="mb-3">
+							You are logged in as
+							{{ app.user.userIdentifier }},
+							<a href="{{ path('security_logout') }}">Logout</a>
+						</div>
+					{% endif %}
+					<div class="form-group mb-3">
+						<label for="inputEmail" class="form-label lh-label fw-medium">Votre email :</label>
+						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control form-control-login" autocomplete="email" required autofocus placeholder="e.g. picard@starfleet.org">
+					</div>
+					<div class="form-group mb-3">
+						<label for="inputPassword" class="form-label lh-label fw-medium">Votre mot de passe :</label>
+						<input type="password" name="password" id="inputPassword" class="form-control form-control-login" autocomplete="current-password" required placeholder="••••••••">
+					</div>
+
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<button class="btn btn-md btn-dark" type="submit">
+						<span>Se connecter</span>
+					</button>
+					<a href="{{ path('registration_register') }}" class="btn btn-link">Je n'ai pas encore de compte !</a>
+					<div class="row mt-3">
+						<div class="checkbox col-md-6 text-start">
+							<label>
+								<input type="checkbox" name="_remember_me">
+								Se souvenir de moi
+							</label>
+						</div>
+					</div>
+				</form>
+				<div class="text-center mt-4">
+					<span class="text-muted">
+						Vous avez oublié votre mot de passe&nbsp;?
+						<u>
+							{# <a href="{{ path('security_forgotPw') }}" class="text-decoration-none">Le réinitialiser</a> #}
+						</u>
+					</span>
+				</div>
 			</div>
-		{% endif %}
-
-		<h1>Connexion</h1>
-		<div class="form-group mb-3">
-			<label for="inputEmail">Votre email :</label>
-			<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="e.g. picard@starfleet.org">
 		</div>
-		<div class="form-group mb-3">
-			<label for="inputPassword">Votre mot de passe :</label>
-			<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="••••••••">
-		</div>
-
-		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-		<div class="checkbox mb-3 mt-3">
-			<label>
-				<input type="checkbox" name="_remember_me">
-				Se souvenir de moi
-			</label>
-		</div>
-
-		<button class="btn btn-success mt-3" type="submit">
-			Se connecter
-		</button>
-	</form>
+	</div>
 {% endblock %}
