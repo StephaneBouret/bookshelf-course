@@ -22,7 +22,7 @@
 			{% if not book.imageName is empty %}
 				<img src="{{ vich_uploader_asset(book, 'imageFile') }}" alt="{{ book.name }}" class="img-fluid">
 			{% else %}
-				<img src="{{ asset('assets/img/default-img.jpg') }}" class="img-fluid" alt="Default Image">
+				<img src="{{ asset('build/images/default-img.jpg') }}" class="img-fluid" alt="Default Image">
 			{% endif %}
 		</div>
 		<div class="col">

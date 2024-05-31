@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Book;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Data\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -16,33 +19,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BookRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var $paginator
+     */
+    protected $paginator;
+
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Book::class);
+        $this->paginator = $paginator;
     }
 
-    //    /**
-    //     * @return Book[] Returns an array of Book objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Récupère les livres en lien avec une recherche
+     *
+     * @return PaginationInterface
+     */
+    public function findSearch(SearchData $search): PaginationInterface
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('c', 'b')
+            ->select('a', 'b')
+            ->join('b.category', 'c')
+            ->join('b.author', 'a');
 
-    //    public function findOneBySomeField($value): ?Book
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (!empty($search->q)) {
+           $query = $query
+                ->andWhere('b.name LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->categories)) {
+            $query = $query
+                ->andWhere('c.id IN (:categories)')
+                ->setParameter('categories', $search->categories);
+        }
+
+        if (!empty($search->author)) {
+            $query = $query
+                 ->andWhere('a.lastname LIKE :a')
+                 ->setParameter('a', "%{$search->author}%");
+         }
+
+        $query = $query->getQuery();
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            6
+        );
+    }
 }

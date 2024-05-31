@@ -14,6 +14,7 @@
         "doctrine/orm": "^3.1",
         "easycorp/easyadmin-bundle": "^4.9",
         "fakerphp/faker": "^1.23",
+        "knplabs/knp-paginator-bundle": "^6.3",
         "mbezhanov/faker-provider-collection": "^2.0",
         "symfony/asset": "7.0.*",
         "symfony/console": "7.0.*",

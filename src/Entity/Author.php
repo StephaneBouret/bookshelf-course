@@ -37,6 +37,11 @@ class Author
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    public function fullName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

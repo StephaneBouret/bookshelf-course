@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
+use App\Form\SearchFormType;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class BookController extends AbstractController
 {
@@ -42,6 +45,22 @@ class BookController extends AbstractController
 
         return $this->render('book/show.html.twig', [
             'book' => $book,
+        ]);
+    }
+
+    #[Route('/books', name: 'book_display')]
+    public function display(Request $request, BookRepository $bookRepository): Response
+    {
+        $data = new SearchData;
+        $data->page = $request->get('page', 1);
+        $form = $this->createForm(SearchFormType::class, $data);
+        $form->handleRequest($request);
+
+        $books = $bookRepository->findSearch($data);
+
+        return $this->render('book/display.html.twig', [
+            'books' => $books,
+            'form' => $form
         ]);
     }
 }
