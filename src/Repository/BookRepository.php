@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -37,6 +38,31 @@ class BookRepository extends ServiceEntityRepository
      */
     public function findSearch(SearchData $search): PaginationInterface
     {
+        $query = $this->getSearchQuery($search)->getQuery();
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            6
+        );
+    }
+
+    /**
+     * Récupère les années minimum et maximum correspondant à une recherche
+     *
+     * @param SearchData $search
+     * @return integer[]
+     */
+    public function findMinMaxDate(SearchData $search): array
+    {
+        $results = $this->getSearchQuery($search, true)
+            ->select('MIN(b.publicationAt) as minDate', 'MAX(b.publicationAt) as maxDate')
+            ->getQuery()
+            ->getResult();
+        return [$results[0]['minDate'], $results[0]['maxDate']];
+    }
+
+    public function getSearchQuery(SearchData $search, $ignoreDate = false): QueryBuilder
+    {
         $query = $this->createQueryBuilder('b')
             ->select('c', 'b')
             ->select('a', 'b')
@@ -44,7 +70,7 @@ class BookRepository extends ServiceEntityRepository
             ->join('b.author', 'a');
 
         if (!empty($search->q)) {
-           $query = $query
+            $query = $query
                 ->andWhere('b.name LIKE :q')
                 ->setParameter('q', "%{$search->q}%");
         }
@@ -57,15 +83,28 @@ class BookRepository extends ServiceEntityRepository
 
         if (!empty($search->author)) {
             $query = $query
-                 ->andWhere('a.lastname LIKE :a')
-                 ->setParameter('a', "%{$search->author}%");
-         }
+                ->andWhere('a.lastname LIKE :a')
+                ->setParameter('a', "%{$search->author}%");
+        }
 
-        $query = $query->getQuery();
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            6
-        );
+        if (!empty($search->minPublicationAt) && $ignoreDate === false) {
+            $minDate = ($search->minPublicationAt);
+            dump($minDate);
+            $query = $query
+                ->andWhere('YEAR(b.publicationAt) >= YEAR(:minDate)')
+                ->setParameter('minDate', $minDate);
+        }
+
+        if (!empty($search->maxPublicationAt) && $ignoreDate === false) {
+            $maxDate = ($search->maxPublicationAt);
+            dump($maxDate);
+            $query = $query
+                ->andWhere('YEAR(b.publicationAt) <= YEAR(:maxDate)')
+                ->setParameter('maxDate', $maxDate);
+        }
+
+        $query->orderBy('b.name', 'ASC');
+
+        return $query;
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Data;
 
+use DateTime;
 use App\Entity\Category;
 
-class SearchData 
+class SearchData
 {
     /**
      * @var integer
@@ -25,4 +26,14 @@ class SearchData
      * @var string
      */
     public $author = '';
+
+    /**
+     * @var DateTimeImmutable
+     */
+    public $minPublicationAt;
+
+    /**
+     * @var DateTimeImmutable
+     */
+    public $maxPublicationAt;
 }

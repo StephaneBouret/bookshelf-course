@@ -56,11 +56,14 @@ class BookController extends AbstractController
         $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
 
+        [$minDate, $maxDate] = $bookRepository->findMinMaxDate($data);
         $books = $bookRepository->findSearch($data);
 
         return $this->render('book/display.html.twig', [
             'books' => $books,
-            'form' => $form
+            'form' => $form,
+            'minDate' => $minDate,
+            'maxDate' => $maxDate,
         ]);
     }
 }
