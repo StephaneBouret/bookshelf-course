@@ -46,6 +46,12 @@ class BookRepository extends ServiceEntityRepository
         );
     }
 
+    public function countItems(SearchData $search): int
+    {
+        $query = $this->getSearchQuery($search)->getQuery();
+        return count($query->getResult());
+    }
+
     /**
      * Récupère les années minimum et maximum correspondant à une recherche
      *

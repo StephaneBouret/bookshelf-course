@@ -2,122 +2,144 @@
 # Login page
 --------------------------------------------------------------*/
 .card-fill {
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid #d5d7d9;
-    border-radius: 0.5rem;
-    flex: 1 1 auto;
-  }
-  
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid #d5d7d9;
+  border-radius: 0.5rem;
+  flex: 1 1 auto;
+}
+
+.card-fill .card-body {
+  display: flex;
+  align-items: center;
+  padding: 20px !important;
+}
+
+@media (min-width: 576px) {
   .card-fill .card-body {
-    display: flex;
-    align-items: center;
-    padding: 20px !important;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+    padding-left: 28px !important;
+    padding-right: 28px !important;
   }
-  
-  @media (min-width: 576px) {
-    .card-fill .card-body {
-      padding-top: 24px !important;
-      padding-bottom: 24px !important;
-      padding-left: 28px !important;
-      padding-right: 28px !important;
-    }
-  }
-  
-  .my-8 {
-    margin-top: 32px !important;
-    margin-bottom: 32px !important;
-  }
-  
-  .lh-label {
-    line-height: 1.35rem;
-  }
-  
-  .form-control-login {
-    height: calc(1.75em + 0.875rem + 2px);
-    padding: 0.4375rem 1rem;
-    line-height: 1.75;
-    color: #0d161b;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #d5d7d9;
-    border-radius: 0.5rem;
-  }
-  
-  .form-control-login::-webkit-input-placeholder {
-    color: #9ea2a4;
-  }
-  
-  .form-control-login::-moz-placeholder {
-    color: #9ea2a4;
-  }
-  
-  .form-control-login:-ms-input-placeholder {
-    color: #9ea2a4;
-  }
-  
-  .form-control-login::-ms-input-placeholder {
-    color: #9ea2a4;
-  }
-  
-  .form-control-login::placeholder {
-    color: #9ea2a4;
-  }
-  
-  .form-control-login:focus {
-    color: #0d161b;
-    background-color: #fff;
-    border-color: #0d161b;
-    outline: 0;
-    box-shadow: 0 0 0 0.1875rem #d5d7d9;
-  }
-  
-  form:invalid button.btn-dark[type=submit],
-  .btn-dark:disabled {
-    color: #fff;
-    background-color: #0d161b;
-    border-color: #0d161b;
-    opacity: 0.4;
-  }
-  
-  .text-muted a {
-    color: #53595c !important;
-  }
-  
-  /*--------------------------------------------------------------
+}
+
+.my-8 {
+  margin-top: 32px !important;
+  margin-bottom: 32px !important;
+}
+
+.lh-label {
+  line-height: 1.35rem;
+}
+
+.form-control-login {
+  height: calc(1.75em + 0.875rem + 2px);
+  padding: 0.4375rem 1rem;
+  line-height: 1.75;
+  color: #0d161b;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d5d7d9;
+  border-radius: 0.5rem;
+}
+
+.form-control-login::-webkit-input-placeholder {
+  color: #9ea2a4;
+}
+
+.form-control-login::-moz-placeholder {
+  color: #9ea2a4;
+}
+
+.form-control-login:-ms-input-placeholder {
+  color: #9ea2a4;
+}
+
+.form-control-login::-ms-input-placeholder {
+  color: #9ea2a4;
+}
+
+.form-control-login::placeholder {
+  color: #9ea2a4;
+}
+
+.form-control-login:focus {
+  color: #0d161b;
+  background-color: #fff;
+  border-color: #0d161b;
+  outline: 0;
+  box-shadow: 0 0 0 0.1875rem #d5d7d9;
+}
+
+form:invalid button.btn-dark[type=submit],
+.btn-dark:disabled {
+  color: #fff;
+  background-color: #0d161b;
+  border-color: #0d161b;
+  opacity: 0.4;
+}
+
+.text-muted a {
+  color: #53595c !important;
+}
+
+/*--------------------------------------------------------------
   # Error 404
   --------------------------------------------------------------*/
-  /* .error-404 {
+/* .error-404 {
     padding: 30px;
   } */
-  
-  .error-404 h1 {
-    font-size: 180px;
-    font-weight: 700;
-    color: #4154f1;
-    margin-bottom: 0;
-    line-height: 150px;
+
+.error-404 h1 {
+  font-size: 180px;
+  font-weight: 700;
+  color: #4154f1;
+  margin-bottom: 0;
+  line-height: 150px;
+}
+
+.error-404 h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #012970;
+  margin-bottom: 30px;
+}
+
+.error-404 .btn {
+  background: #51678f;
+  color: #fff;
+  padding: 8px 30px;
+}
+
+.error-404 .btn:hover {
+  background: #3e4f6f;
+}
+
+@media (min-width: 992px) {
+  .error-404 img {
+    max-width: 50%;
   }
-  
-  .error-404 h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #012970;
-    margin-bottom: 30px;
-  }
-  
-  .error-404 .btn {
-    background: #51678f;
-    color: #fff;
-    padding: 8px 30px;
-  }
-  
-  .error-404 .btn:hover {
-    background: #3e4f6f;
-  }
-  
-  @media (min-width: 992px) {
-    .error-404 img {
-      max-width: 50%;
-    }
-  }
+}
+
+/*--------------------------------------------------------------
+  # Spinner
+  --------------------------------------------------------------*/
+.is-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFF;
+  opacity: 0.5;
+  z-index: 4;
+}
+
+.is-loading .spinner-border {
+  position: absolute;
+  top: calc(50% - 1rem);
+  left: calc(50% - 1rem);
+  z-index: 5;
+}

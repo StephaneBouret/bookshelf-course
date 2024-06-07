@@ -12,6 +12,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 require('bootstrap');
 import noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
+import Filter from './js/modules/Filter.js';
+
+new Filter(document.querySelector('.js-filter'))
 
 const dateSlider = document.getElementById('date-slider');
 

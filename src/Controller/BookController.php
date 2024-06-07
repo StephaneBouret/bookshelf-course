@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class BookController extends AbstractController
@@ -31,7 +32,7 @@ class BookController extends AbstractController
             'category' => $category
         ]);
     }
-    
+
     #[Route('/{category_slug}/{slug}', name: 'book_show', priority: -1)]
     public function show($slug, BookRepository $bookRepository)
     {
@@ -58,12 +59,26 @@ class BookController extends AbstractController
 
         [$minDate, $maxDate] = $bookRepository->findMinMaxDate($data);
         $books = $bookRepository->findSearch($data);
-
+        // Count items with search criteria
+        $totalItems = $bookRepository->countItems($data);
+        if ($request->get('ajax')) {
+            return new JsonResponse([
+                'content' => $this->renderView('book/_books.html.twig', [
+                    'books' => $books,
+                ]),
+                'sorting' => $this->renderView('book/_sorting.html.twig', ['books' => $books]),
+                'pagination' => $this->renderView('book/_pagination.html.twig', ['books' => $books]),
+                'minDate' => $minDate,
+                'maxDate' => $maxDate,
+                'totalItems' => $totalItems,
+            ]);
+        }
         return $this->render('book/display.html.twig', [
             'books' => $books,
             'form' => $form,
             'minDate' => $minDate,
             'maxDate' => $maxDate,
+            'totalItems' => $totalItems,
         ]);
     }
 }

@@ -1,0 +1,5 @@
+{% for b in books %}
+	<div class="col-md-4" id="book-{{ b.id }}">
+		{% include "partials/_book_card.html.twig" %}
+	</div>
+{% endfor %}
