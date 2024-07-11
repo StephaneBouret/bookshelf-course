@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Bonjour {{ user.firstname }} {{ user.lastname }},</h1>
+        <p>Nous vous rappelons que vous devez restituer le(s) livre(s) emprunté(s) :</p>
+        <ul>
+            {% for book in borrow.books %}
+                <li>{{ book.name }}</li>
+            {% endfor %}
+        </ul>
+        <p>Date de restitution prévue : {{ borrow.dueDateAt|date('d/m/Y') }}</p>
+    </body>
+</html>

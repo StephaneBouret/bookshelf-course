@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Borrowing;
 use App\Form\Type\CustomDateType;
+use App\Service\SendMailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,14 +17,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class BorrowingCrudController extends AbstractCrudController
 {
     protected $em;
+    protected $sendMailService;
+    protected $adminUrlGenerator;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, SendMailService $sendMailService, AdminUrlGenerator $adminUrlGenerator)
     {
         $this->em = $em;
+        $this->sendMailService = $sendMailService;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     public static function getEntityFqcn(): string
@@ -42,11 +49,24 @@ class BorrowingCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $returnDateBorrowing  = Action::NEW('returnDate', 'Enregistrement de la date de restitution', 'fas fa-reply')->linkToCrudAction('returnDate');
+        $sendReminderMail = Action::new('sendReminder', 'Envoyer un mail de relance', 'fas fa-envelope')
+            ->linkToCrudAction('sendReminder')
+            ->displayIf(fn ($entity) => $entity->isOverdue());
+
+        $returnDateBorrowing  = Action::NEW('returnDate', 'Retour du livre', 'fas fa-reply')
+            ->linkToCrudAction('returnDate')
+            ->displayIf(fn ($entity) => $entity->isOverdue());
+
         $actions = parent::configureActions($actions);
         $actions->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_EDIT, $returnDateBorrowing)
-            ->remove(Crud::PAGE_INDEX, Action::NEW);
+            ->add(Crud::PAGE_INDEX, $sendReminderMail)
+            ->add(Crud::PAGE_INDEX, $returnDateBorrowing)
+            // Supprime l'édition
+            ->disable(Action::EDIT)
+            ->add(Crud::PAGE_EDIT, Action::INDEX)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_RETURN)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE);
         return $actions;
     }
 
@@ -69,15 +89,13 @@ class BorrowingCrudController extends AbstractCrudController
     public function returnDate(AdminContext $context): Response
     {
         $borrow = $context->getEntity()->getInstance();
-
-        // Récupérer les livres empruntés
         $books = $borrow->getBooks();
-        // Parcourir les livres empruntés et mettre à jour la disponibilité
         foreach ($books as $book) {
             $book->setIsAvailable(true);
             $this->em->persist($book);
         }
-        $borrow->setReturnDateAt(new \DateTimeImmutable());
+        $borrow->setReturnDateAt(new \DateTimeImmutable())
+            ->setIsOverdue(true);
         $this->em->persist($borrow);
 
         $this->em->flush();
@@ -88,6 +106,34 @@ class BorrowingCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return parent::configureFilters($filters)
-            ->add('dueDateAt');
+            ->add(BooleanFilter::new('isOverdue', 'Non restitution'));
+    }
+
+    public function sendReminder(AdminContext $context): Response
+    {
+        $borrow = $context->getEntity()->getInstance();
+        $user = $borrow->getUser();
+        $email = $user->getEmail();
+
+        $this->sendMailService->sendEmail(
+            'contact@symbook.com',
+            'Bibliothèque',
+            $email,
+            'Relance de retour de livre',
+            'reminder_email',
+            [
+                'user' => $user,
+                'borrow' => $borrow,
+            ]
+        );
+
+        $this->addFlash('success', 'Le mail de relance a bien été envoyé !');
+
+        $url = $this->adminUrlGenerator
+            ->setController(BorrowingCrudController::class)
+            ->setAction('index')
+            ->generateUrl();
+
+        return $this->redirect($url);
     }
 }
